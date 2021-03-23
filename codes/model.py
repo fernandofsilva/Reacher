@@ -10,7 +10,7 @@ class Actor(nn.Module):
     This class construct the model.
     """
 
-    def __init__(self, state_size, action_size, seed, fc1_units=256, fc2_units=128, fc3_units=32):
+    def __init__(self, state_size, action_size, seed, fc1_units=256, fc2_units=128):
         """ Initialize parameters and build model.
 
         Args:
@@ -19,14 +19,12 @@ class Actor(nn.Module):
             seed: Integer. Value to set the seed of the model
             fc1_units: Integer. Number of nodes in first fully connect hidden layer
             fc2_units: Integer. Number of nodes in second fully connect hidden layer
-            fc3_units: Integer. Number of nodes in third fully connect hidden layer
         """
         super(Actor, self).__init__()
         self.seed = torch.manual_seed(seed)
         self.fc1 = nn.Linear(state_size, fc1_units)
         self.fc2 = nn.Linear(fc1_units, fc2_units)
-        self.fc3 = nn.Linear(fc2_units, fc3_units)
-        self.fc4 = nn.Linear(fc3_units, action_size)
+        self.fc3 = nn.Linear(fc2_units, action_size)
         self.reset_parameters()
 
     def reset_parameters(self):
@@ -36,8 +34,7 @@ class Actor(nn.Module):
         """
         self.fc1.weight.data.uniform_(*self.hidden_init(self.fc1))
         self.fc2.weight.data.uniform_(*self.hidden_init(self.fc2))
-        self.fc3.weight.data.uniform_(*self.hidden_init(self.fc3))
-        self.fc4.weight.data.uniform_(-3e-3, 3e-3)
+        self.fc3.weight.data.uniform_(-3e-3, 3e-3)
 
     @staticmethod
     def hidden_init(layer):
@@ -64,9 +61,8 @@ class Actor(nn.Module):
         # Define the hidden layers
         hidden = F.relu(self.fc1(state))
         hidden = F.relu(self.fc2(hidden))
-        hidden = F.relu(self.fc3(hidden))
 
-        return F.tanh(self.fc4(hidden))
+        return F.tanh(self.fc3(hidden))
 
 
 class Critic(nn.Module):
@@ -75,7 +71,7 @@ class Critic(nn.Module):
     This class construct the model.
     """
 
-    def __init__(self, state_size, action_size, seed, fc1_units=256, fc2_units=128, fc3_units=32):
+    def __init__(self, state_size, action_size, seed, fc1_units=256, fc2_units=128):
         """ Initialize parameters and build model.
 
         Args:
@@ -84,21 +80,18 @@ class Critic(nn.Module):
             seed: Integer. Value to set the seed of the model
             fc1_units: Integer. Number of nodes in first fully connect hidden layer
             fc2_units: Integer. Number of nodes in second fully connect hidden layer
-            fc3_units: Integer. Number of nodes in third fully connect hidden layer
         """
         super(Critic, self).__init__()
         self.seed = torch.manual_seed(seed)
         self.fc1 = nn.Linear(state_size, fc1_units)
         self.fc2 = nn.Linear(fc1_units+action_size, fc2_units)
-        self.fc3 = nn.Linear(fc2_units, fc3_units)
-        self.fc4 = nn.Linear(fc3_units, 1)
+        self.fc3 = nn.Linear(fc2_units, 1)
         self.reset_parameters()
 
     def reset_parameters(self):
         self.fc1.weight.data.uniform_(*self.hidden_init(self.fc1))
         self.fc2.weight.data.uniform_(*self.hidden_init(self.fc2))
-        self.fc3.weight.data.uniform_(*self.hidden_init(self.fc3))
-        self.fc4.weight.data.uniform_(-3e-3, 3e-3)
+        self.fc3.weight.data.uniform_(-3e-3, 3e-3)
 
     @staticmethod
     def hidden_init(layer):
@@ -128,6 +121,5 @@ class Critic(nn.Module):
         hidden = F.relu(self.fc1(state))
         cat_hidden = torch.cat((hidden, action), dim=1)
         hidden = F.relu(self.fc2(cat_hidden))
-        hidden = F.relu(self.fc3(hidden))
 
-        return self.fc4(hidden)
+        return self.fc3(hidden)
