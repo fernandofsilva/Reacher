@@ -7,7 +7,6 @@ def interact(env,
              agent,
              brain_name,
              n_episodes,
-             max_t,
              save_model='model/checkpoint.pth'):
     """Interaction between agent and environment.
 
@@ -19,7 +18,6 @@ def interact(env,
         agent: class agent to interact with the environment
         brain_name: String. Name of the agent of the unity environment
         n_episodes: Integer. Maximum number of training episodes
-        max_t: Integer. Maximum number of time-steps per episode
         save_model: String. Path+file_name to save the model
     """
     scores = []                        # list containing scores from each episode
@@ -34,7 +32,7 @@ def interact(env,
         score = 0
 
         # Loop over the maximum number of time-steps per episode
-        for t in range(max_t):
+        while True:
             action = agent.act(state)
             next_state, reward, done = agent.env_step(env, action, brain_name)
             agent.step(state, action, reward, next_state, done)
