@@ -8,9 +8,6 @@ def interact(env,
              brain_name,
              n_episodes,
              max_t,
-             eps_start,
-             eps_end,
-             eps_decay,
              save_model='model/checkpoint.pth'):
     """Interaction between agent and environment.
 
@@ -23,14 +20,10 @@ def interact(env,
         brain_name: String. Name of the agent of the unity environment
         n_episodes: Integer. Maximum number of training episodes
         max_t: Integer. Maximum number of time-steps per episode
-        eps_start: Float. Starting value of epsilon, for epsilon-greedy action selection
-        eps_end: Float. Minimum value of epsilon
-        eps_decay: Float. Multiplicative factor (per episode) for decreasing epsilon
         save_model: String. Path+file_name to save the model
     """
     scores = []                        # list containing scores from each episode
     scores_window = deque(maxlen=100)  # last 100 scores
-    eps = eps_start                    # initialize epsilon
     solved_env = 0
 
     # Loop the define episodes
@@ -54,7 +47,6 @@ def interact(env,
 
         scores_window.append(score)        # save most recent score
         scores.append(score)               # save most recent score
-        eps = max(eps_end, eps_decay*eps)  # decrease epsilon
 
         print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
 
