@@ -119,7 +119,7 @@ class Critic(nn.Module):
         """
         # Define the hidden layers
         hidden = F.relu(self.fc1(state))
-        cat_hidden = torch.cat((hidden, action), dim=1)
-        hidden = F.relu(self.fc2(cat_hidden))
+        hidden = torch.cat((hidden, action), dim=1)
+        hidden = F.relu(self.fc2(hidden))
 
         return self.fc3(hidden)
