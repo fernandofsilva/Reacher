@@ -8,7 +8,6 @@ parser = argparse.ArgumentParser()
 
 # Add arguments (Interaction with the environment)
 parser.add_argument('--n_episodes', nargs='?', const=1, type=int, default=1000)
-parser.add_argument('--max_t', nargs='?', const=1, type=int, default=1000)
 
 # Add arguments (Agent)
 parser.add_argument('--buffer_size', nargs='?', const=1, type=int, default=int(1e5))
@@ -31,7 +30,8 @@ if __name__ == '__main__':
 
     # Create environment
     # env = UnityEnvironment(file_name="Reacher_Linux_NoVis/Reacher.x86_64")
-    env = UnityEnvironment(file_name="unity/Reacher_Linux_NoVis/Reacher.x86_64")
+    # env = UnityEnvironment(file_name="unity/Reacher_Linux_NoVis/Reacher.x86_64")
+    env = UnityEnvironment(file_name="/opt/project/unity/Reacher_Linux_NoVis/Reacher.x86_64")
 
     # Get the default brain
     brain_name = env.brain_names[0]
@@ -59,7 +59,5 @@ if __name__ == '__main__':
         env,
         agent,
         brain_name=brain_name,
-        n_episodes=args.n_episodes,
-        max_t=args.max_t
+        n_episodes=args.n_episodes
     )
-
