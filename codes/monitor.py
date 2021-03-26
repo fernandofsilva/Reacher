@@ -28,7 +28,8 @@ def interact(env,
     for i_episode in range(1, n_episodes+1):
 
         env_info = env.reset(train_mode=True)[brain_name]  # reset the environment
-        state = env_info.vector_observations[0]             # get the current state
+        state = env_info.vector_observations[0]            # get the current state
+        agent.noise.reset()                                # reset the agent noise
         score = 0
 
         # Loop over the maximum number of time-steps per episode
@@ -46,7 +47,7 @@ def interact(env,
         scores_window.append(score)        # save most recent score
         scores.append(score)               # save most recent score
 
-        print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
+        print(f'\rEpisode {i_episode}\t Score: {score:.2f}\tAverage Score: {np.mean(scores_window):.2f}', end="")
 
         if i_episode % 100 == 0:
             print(f'\rEpisode {i_episode}\tAverage Score: {np.mean(scores_window):.2f}')
