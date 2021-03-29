@@ -28,26 +28,26 @@ def interact(env,
     for i_episode in range(1, n_episodes+1):
 
         env_info = env.reset(train_mode=True)[brain_name]  # reset the environment
-        state = env_info.vector_observations[0]            # get the current state
+        states = env_info.vector_observations               # get the current state
         agent.noise.reset()                                # reset the agent noise
-        score = 0
+        score = np.zeros(len(env_info.agents))
 
         # Loop over the maximum number of time-steps per episode
         while True:
-            action = agent.act(state)
-            next_state, reward, done = agent.env_step(env, action, brain_name)
-            agent.step(state, action, reward, next_state, done)
-            state = next_state
-            score += reward
+            actions = agent.act(states)
+            next_states, rewards, dones = agent.env_step(env, actions, brain_name)
+            agent.step(states, actions, rewards, next_states, dones)
+            states = next_states
+            score += rewards
 
             # Break the loop if it is final state
-            if done:
+            if np.any(dones):
                 break
 
-        scores_window.append(score)        # save most recent score
-        scores.append(score)               # save most recent score
+        scores_window.append(np.mean(score))  # save most recent score
+        scores.append(np.mean(score))         # save most recent score
 
-        print(f'\rEpisode {i_episode}\t Score: {score:.2f}\tAverage Score: {np.mean(scores_window):.2f}', end="")
+        print(f'\rEpisode {i_episode}\t Score: {np.mean(score):.2f}\tAverage Score: {np.mean(scores_window):.2f}', end="")
 
         if i_episode % 100 == 0:
             print(f'\rEpisode {i_episode}\tAverage Score: {np.mean(scores_window):.2f}')

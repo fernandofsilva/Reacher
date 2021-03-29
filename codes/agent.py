@@ -78,47 +78,48 @@ class Agent:
         return 'RL_Agent_class'
 
     @staticmethod
-    def env_step(env, action, brain_name):
+    def env_step(env, actions, brain_name):
         """Apply an action and return the state, reward and done.
 
         Args:
             env: unity environment
-            action: Integer. Action to be done in the environment
+            actions: Integer. Action to be done in the environment
             brain_name: String. Name of the agent of the unity environment
 
         Returns:
             A tuple of three items with
-            next_state: List. Contains the next state returned,
-            reward: Float. Number of the reward returned.
-            done: Boolean. Indication if the episode ends.
+            next_states: List. Contains the next state returned,
+            rewards: Float. Number of the reward returned.
+            dones: Boolean. Indication if the episode ends.
         """
 
         # send the action to the environment
-        env_info = env.step(action)[brain_name]
+        env_info = env.step(actions)[brain_name]
 
         # get the next state
-        next_state = env_info.vector_observations[0]
+        next_states = env_info.vector_observations
 
         # Get the reward
-        reward = env_info.rewards[0]
+        rewards = env_info.rewards
 
         # is it the episode ended?
-        done = env_info.local_done[0]
+        dones = env_info.local_done
 
-        return next_state, reward, done
+        return next_states, rewards, dones
 
-    def step(self, state, action, reward, next_state, done):
+    def step(self, states, actions, rewards, next_states, dones):
         """Save state on buffer and trigger learn according to update_every
 
         Args:
-            state: The previous state of the environment
-            action: Integer. Previous action selected by the agent
-            reward: Float. Reward value
-            next_state: The current state of the environment
-            done: Boolean. Whether the episode is complete
+            states: The previous state of the environment
+            actions: Integer. Previous action selected by the agent
+            rewards: Float. Reward value
+            next_states: The current state of the environment
+            dones: Boolean. Whether the episode is complete
         """
         # Save experience in replay memory
-        self.memory.add(state, action, reward, next_state, done)
+        for state, action, reward, next_state, done in zip(states, actions, rewards, next_states, dones):
+            self.memory.add(state, action, reward, next_state, done)
 
         # If enough samples are available in memory, get random subset and learn
         if len(self.memory) > self.batch_size:
@@ -156,7 +157,7 @@ class Agent:
 
     def reset(self):
         """Reset noise values."""
-        self.noise_reset()
+        self.noise.reset()
 
     def learn(self, experiences):
         """Update policy and value parameters using given batch of experience tuples.
@@ -198,7 +199,7 @@ class Agent:
         # Minimize the loss
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.critic_local.parameters(), 1)
+        # torch.nn.utils.clip_grad_norm_(self.critic_local.parameters(), 1)
         self.actor_optimizer.step()
 
         # ---------------------- update target networks ---------------------- #
@@ -304,6 +305,7 @@ class OUNoise:
         self.theta = theta
         self.sigma = sigma
         self.seed = random.seed(seed)
+        self.state = self.mu
         self.reset()
 
     def reset(self):
