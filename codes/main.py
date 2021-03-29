@@ -14,8 +14,8 @@ parser.add_argument('--buffer_size', nargs='?', const=1, type=int, default=int(1
 parser.add_argument('--batch_size', nargs='?', const=1, type=int, default=128)
 parser.add_argument('--gamma', nargs='?', const=1, type=float, default=0.99)
 parser.add_argument('--tau', nargs='?', const=1, type=float, default=1e-3)
-parser.add_argument('--lr_actor', nargs='?', const=1, type=float, default=1e-3)
-parser.add_argument('--lr_critic', nargs='?', const=1, type=float, default=1e-3)
+parser.add_argument('--lr_actor', nargs='?', const=1, type=float, default=1e-4)
+parser.add_argument('--lr_critic', nargs='?', const=1, type=float, default=1e-4)
 parser.add_argument('--weight_decay', nargs='?', const=1, type=float, default=0)
 
 # Parser parameters
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     agent = Agent(
         state_size=len(env_info.vector_observations[0]),
         action_size=brain.vector_action_space_size,
+        num_agents=len(env_info.agents),
         buffer_size=args.buffer_size,
         batch_size=args.batch_size,
         gamma=args.gamma,

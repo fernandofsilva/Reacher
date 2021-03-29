@@ -18,6 +18,7 @@ class Agent:
     def __init__(self,
                  state_size,
                  action_size,
+                 num_agents,
                  buffer_size,
                  batch_size,
                  gamma,
@@ -31,6 +32,7 @@ class Agent:
         Args:
             state_size: Integer. Dimension of each state
             action_size: Integer. Dimension of each action
+            num_agents: Integer. Number of agents
             buffer_size: Integer. Replay buffer size
             batch_size: Integer. Mini-batch size
             gamma: Float. Discount factor
@@ -43,6 +45,7 @@ class Agent:
         # Environment parameters
         self.state_size = state_size
         self.action_size = action_size
+        self.num_agents = num_agents
 
         # Reward discount
         self.gamma = gamma
@@ -63,7 +66,7 @@ class Agent:
         self.batch_size = batch_size
 
         # Noise process
-        self.noise = OUNoise(action_size, seed)
+        self.noise = OUNoise((num_agents, action_size), seed)
 
         # Replay memory
         self.memory = ReplayBuffer(action_size, buffer_size, batch_size, seed)
@@ -301,11 +304,11 @@ class OUNoise:
         :param theta: Float. Rate of the mean reversion of the distribution
         :param sigma: Float. Volatility of the distribution
         """
+        self.size = size
         self.mu = mu * np.ones(size)
         self.theta = theta
         self.sigma = sigma
         self.seed = random.seed(seed)
-        self.state = self.mu
         self.reset()
 
     def reset(self):
@@ -315,6 +318,6 @@ class OUNoise:
     def sample(self):
         """Update internal state and return it as a noise sample."""
         x = self.state
-        dx = self.theta * (self.mu - x) + self.sigma * np.array([random.random() for i in range(len(x))])
+        dx = self.theta * (self.mu - x) + self.sigma * np.random.standard_normal(self.size)
         self.state = x + dx
         return self.state
