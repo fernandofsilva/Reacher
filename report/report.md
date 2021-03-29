@@ -41,4 +41,4 @@ The results show the reward per episode, the dots represent the reward per episo
 
 ## Future work
 
-In future work, it would be an options to implement prioritized experience replay and others models like PPO, but due the performance of the results of the DDPG, it will be hard to find other model could beat it. 
+In future work, it would be an options to implement prioritized experience replay and others models like PPO, but due the results of the DDPG, it will be hard to find other model could beat it. 
