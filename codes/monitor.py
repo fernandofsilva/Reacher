@@ -47,16 +47,16 @@ def interact(env,
         scores_window.append(np.mean(score))  # save most recent score
         scores.append(np.mean(score))         # save most recent score
 
-        print(f'\rEpisode {i_episode}\t Score: {np.mean(score):.2f}\tAverage Score: {np.mean(scores_window):.2f}', end="")
+        print(f'\rEpisode {i_episode}\tAverage Score: {np.mean(scores_window):.2f}', end="")
 
-        if i_episode % 100 == 0:
+        if i_episode % 25 == 0:
             print(f'\rEpisode {i_episode}\tAverage Score: {np.mean(scores_window):.2f}')
 
         if np.mean(scores_window) >= 30.0 and solved_env == 0:
             print(f'\nEnvironment solved in {i_episode-100:d} episodes!\tAverage Score: {np.mean(scores_window):.2f}')
 
             # Save model
-            torch.save(agent.model_local.state_dict(), save_model)
+            torch.save(agent.actor_local.state_dict(), save_model)
             solved_env += 1
 
     return scores
