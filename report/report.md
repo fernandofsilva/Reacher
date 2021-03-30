@@ -48,7 +48,7 @@ The results show the reward per episode, the dots represent the reward per episo
 the dashed red line shows when the environment was solved (when the mean of the last 100 rewards are above 30), the dashed green line shows the mean of all rewards.
 
 The scores of each episode correspond to the mean of the rewards of the 20 agents (version 2), the environment was solved in the episode 104,
-in other words, the mean of the episode 4 to 104 ware above 30. 
+in other words, the mean of rewards from the episode 4 to 104 ware above 30. 
 
 ![](/images/scores.png)
 
