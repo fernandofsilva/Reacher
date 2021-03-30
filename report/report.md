@@ -1,4 +1,4 @@
-# Banana Collector using a Deep Q-Learning
+# Reacher using a DDPG
 
 ## Introduction
 
