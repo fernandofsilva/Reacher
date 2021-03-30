@@ -17,7 +17,7 @@ $$a^{*}(s)=argmaxQ^{*}(s,a)$$
 DDPG interleaves learning an approximator to $Q^{*}(s,a)$ with learning an approximator to $a^{*}(s)$. Because the action space is continuous, 
 the function $Q^{*}(s,a)$ is presumed to be differentiable with respect to the action argument. It allows us to set up an efficient, 
 gradient-based learning rule for a policy $\mu(s)$ which exploits that fact. 
-Then, instead of running an expensive optimization subroutine each time we wish to compute $\max_a Q(s,a)$, we can approximate it with \max_a Q(s,a) \approx Q(s,\mu(s)) [(OpenAI, 2018)](https://spinningup.openai.com/en/latest/algorithms/ddpg.html).
+Then, instead of running an expensive optimization subroutine each time we wish to compute $\max_a Q(s,a)$, we can approximate it with $\max_a Q(s,a) \approx Q(s,\mu(s))$ [(OpenAI, 2018)](https://spinningup.openai.com/en/latest/algorithms/ddpg.html).
 
 ### Parameters table
 
