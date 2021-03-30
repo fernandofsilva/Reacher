@@ -28,10 +28,8 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
 
-    # Create environment
-    # env = UnityEnvironment(file_name="Reacher_Linux_NoVis/Reacher.x86_64")
-    # env = UnityEnvironment(file_name="unity/Reacher_Linux_NoVis/Reacher.x86_64")
-    env = UnityEnvironment(file_name="/opt/project/unity/Reacher_Linux_NoVis/Reacher.x86_64")
+    # Create environmen
+    env = UnityEnvironment(file_name="unity/Reacher_Linux_NoVis/Reacher.x86_64")
 
     # Get the default brain
     brain_name = env.brain_names[0]
